@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"io"
 	"log"
@@ -9,6 +10,8 @@ import (
 	"strconv"
 	"sync"
 	"time"
+	"go.uber.org/zap"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // Post represents a blog post
@@ -26,6 +29,19 @@ var (
 )
 
 func main() {
+	// Initialize logger
+	logger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatalf("Failed to initialize logger: %v", err)
+	}
+	defer logger.Sync()
+
+	// Initialize database
+	if err := initDB(); err != nil {
+		logger.Fatal("Failed to initialize database", zap.Error(err))
+	}
+	defer db.Close()
+
 	// Setup routes with middleware chain
 	http.Handle("/posts", loggingMiddleware(jsonMiddleware(http.HandlerFunc(postsHandler))))
 	http.Handle("/posts/", loggingMiddleware(jsonMiddleware(http.HandlerFunc(postHandler))))
@@ -189,4 +205,22 @@ func getPort() string {
 		port = "8080"
 	}
 	return ":" + port
+}
+
+var db *sql.DB
+
+func initDB() error {
+	var err error
+	db, err = sql.Open("sqlite3", "./posts.db")
+	if err != nil {
+		return err
+	}
+	
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS posts (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	body TEXT NOT NULL,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);`)
+	return err
 }
