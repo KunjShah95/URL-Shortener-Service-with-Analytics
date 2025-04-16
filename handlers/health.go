@@ -7,7 +7,7 @@ import (
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		sendError(w, http.StatusMethodNotAllowed, "Method not allowed")
+		SendError(w, http.StatusMethodNotAllowed, "Method not allowed")
 		return
 	}
 	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
