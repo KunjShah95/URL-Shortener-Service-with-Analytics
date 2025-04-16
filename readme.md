@@ -1,4 +1,4 @@
-# URL Shortener Service with Analytics 🚀 
+# Generic HTTP Server with Blog Post Functionality 🚀
 
 ![Go](https://img.shields.io/badge/Go-1.16+-00ADD8?style=for-the-badge&logo=go&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
@@ -6,14 +6,14 @@
 
 ## 📋 Overview
 
-A high-performance URL shortening service built with Go that not only creates shortened URLs but also provides robust analytics for tracking link usage.
+A versatile HTTP server built with Go that provides blog post functionality with clean architecture, easy customization, and performance optimization.
 
 ### ✨ Features
 
-- ⚡ Fast URL shortening with custom or auto-generated aliases
-- 📊 Comprehensive analytics for link clicks
-- 🔄 Redirect handling with proper HTTP status codes
-- 🔍 URL validation and sanitization
+- ⚡ Fast and lightweight HTTP server implementation
+- 📝 Complete blog post CRUD operations
+- 🔍 Search and filtering capabilities
+- 🔒 Content validation and sanitization
 - 🧪 Thoroughly tested codebase
 
 ## 🚀 Getting Started
@@ -27,8 +27,8 @@ A high-performance URL shortening service built with Go that not only creates sh
 
 1. Clone the repository
 ```
-git clone https://github.com/yourusername/url-shortener-analytics.git
-cd url-shortener-analytics
+git clone https://github.com/KunjShah95/generic-http-blog-server.git
+cd generic-http-blog-server
 ```
 
 2. Install dependencies
@@ -43,25 +43,28 @@ go run main.go
 
 ## 🔧 Usage
 
-### Creating a Short URL
+### Creating a Blog Post
 
 ```
-POST /shorten
+POST /posts
 ```
 
 Request body:
 ```
 {
-    "url": "https://example.com/very-long-url-that-needs-shortening",
-    "custom_alias": "mylink"  // Optional
+    "title": "My First Blog Post",
+    "content": "This is the content of my first blog post.",
+    "tags": ["golang", "web-dev"]
 }
 ```
 
 Response:
 ```
 {
-    "short_url": "http://yourdomain.com/mylink",
-    "original_url": "https://example.com/very-long-url-that-needs-shortening",
+    "id": "123",
+    "title": "My First Blog Post",
+    "content": "This is the content of my first blog post.",
+    "tags": ["golang", "web-dev"],
     "created_at": "2023-04-12T15:04:05Z"
 }
 ```
@@ -85,9 +88,9 @@ go test ./...
 ## 📈 Future Improvements
 
 - [ ] User authentication
-- [ ] Rate limiting
-- [ ] Expiry for short URLs
-- [ ] Dashboard for analytics visualization
+- [ ] Comments functionality
+- [ ] Media uploads
+- [ ] Admin dashboard
 - [ ] API key management
 
 ## 📝 License
